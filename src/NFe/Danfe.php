@@ -3998,11 +3998,12 @@ class Danfe extends DaCommon
         if (!$this->gerarInformacoesAutomaticas) {
             return '';
         }
-        $formaNfeRef = "\r\nNFe Ref.: série:%d número:%d emit:%s em %s [%s]";
-        $formaCTeRef = "\r\nCTe Ref.: série:%d número:%d emit:%s em %s [%s]";
-        $formaNfRef  = "\r\nNF  Ref.: série:%d numero:%d emit:%s em %s modelo: %d";
+        /*Guiii - removido a exibição do CNPJ */
+        $formaNfeRef = "\r\nNFe Ref.: série:%d número:%d em %s [%s]";
+        $formaCTeRef = "\r\nCTe Ref.: série:%d número:%d em %s [%s]";
+        $formaNfRef  = "\r\nNF  Ref.: série:%d numero:%d em %s modelo: %d";
         $formaECFRef = "\r\nECF Ref.: modelo: %s ECF:%d COO:%d";
-        $formaNfpRef = "\r\nNFP Ref.: série:%d número:%d emit:%s em %s modelo: %d IE:%s";
+        $formaNfpRef = "\r\nNFP Ref.: série:%d número:%d em %s modelo: %d IE:%s";
         $saida       = '';
         $nfRefs      = $this->ide->getElementsByTagName('NFref');
         if (0 === $nfRefs->length) {
@@ -4023,7 +4024,7 @@ class Danfe extends DaCommon
                 $cnpj          = $this->formatField(substr($chave_acesso, 6, 14), "##.###.###/####-##");
                 $serie         = substr($chave_acesso, 22, 3);
                 $numero        = substr($chave_acesso, 25, 9);
-                $saida         .= sprintf($formaNfeRef, $serie, $numero, $cnpj, $data, $chave_acessoF);
+                $saida         .= sprintf($formaNfeRef, $serie, $numero, $data, $chave_acessoF);
             }
             $refNF = $nfRef->getElementsByTagName('refNF');
             foreach ($refNF as $umaRefNFe) {
@@ -4034,7 +4035,7 @@ class Danfe extends DaCommon
                 $numero = $umaRefNFe->getElementsByTagName('nNF')->item(0)->nodeValue;
                 $data   = substr($data, 2, 2) . "/20" . substr($data, 0, 2);
                 $cnpj   = $this->formatField($cnpj, "##.###.###/####-##");
-                $saida  .= sprintf($formaNfRef, $serie, $numero, $cnpj, $data, $mod);
+                $saida  .= sprintf($formaNfRef, $serie, $numero, $data, $mod);
             }
             $refCTe = $nfRef->getElementsByTagName('refCTe');
             foreach ($refCTe as $chave_acessoRef) {
@@ -4044,7 +4045,7 @@ class Danfe extends DaCommon
                 $cnpj          = $this->formatField(substr($chave_acesso, 6, 14), "##.###.###/####-##");
                 $serie         = substr($chave_acesso, 22, 3);
                 $numero        = substr($chave_acesso, 25, 9);
-                $saida         .= sprintf($formaCTeRef, $serie, $numero, $cnpj, $data, $chave_acessoF);
+                $saida         .= sprintf($formaCTeRef, $serie, $numero, $data, $chave_acessoF);
             }
             $refECF = $nfRef->getElementsByTagName('refECF');
             foreach ($refECF as $umaRefNFe) {
@@ -4071,7 +4072,7 @@ class Danfe extends DaCommon
                 } else {
                     $cpf_cnpj = $this->formatField($cnpj, "##.###.###/####-##");
                 }
-                $saida .= sprintf($formaNfpRef, $serie, $numero, $cpf_cnpj, $data, $mod, $ie);
+                $saida .= sprintf($formaNfpRef, $serie, $numero, $data, $mod, $ie);
             }
         }
 
